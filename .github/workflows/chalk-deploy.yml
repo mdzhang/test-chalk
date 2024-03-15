@@ -9,7 +9,6 @@ on:
 jobs:
   plan-dev:
     runs-on: ubuntu-latest
-    environment: dev
     steps:
       - name: Plan changes
         id: chalk-plan
@@ -23,3 +22,14 @@ jobs:
       - name: Repeat back plan
         run: |
           echo ${{ steps.chalk-plan.outputs.plan-output }}
+
+  apply-dev:
+    runs-on: ubuntu-latest
+    needs: plan-dev
+    environment: dev # successfully running this job will create a deployment for this environment
+    steps:
+      - name: Plan changes
+        id: chalk-plan
+        run: |
+          echo "Now I actually apply changes"
+
