@@ -33,3 +33,30 @@ jobs:
         run: |
           echo "Now I actually apply changes"
 
+  plan-prod:
+    runs-on: ubuntu-latest
+    needs: apply-dev
+    steps:
+      - name: Plan changes
+        id: chalk-plan
+        run: |
+          {
+            echo 'plan-output<<EOF'
+            echo "Time for prod!"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Repeat back plan
+        run: |
+          echo ${{ steps.chalk-plan.outputs.plan-output }}
+
+  apply-prod:
+    runs-on: ubuntu-latest
+    needs: plan-dev
+    environment: prod
+    steps:
+      - name: Plan changes
+        id: chalk-plan
+        run: |
+          echo "Now I actually apply changes"
+
