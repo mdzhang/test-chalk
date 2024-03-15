@@ -1,0 +1,25 @@
+name: Deployment
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  plan-dev:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Plan changes
+        id: chalk-plan
+        run: |
+          {
+            echo 'plan-output<<EOF'
+            echo "Here is some very long, potentially multiline output"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Repeat back plan
+        run: |
+          echo ${{ steps.chalk-plan.outputs.plan-output }}
